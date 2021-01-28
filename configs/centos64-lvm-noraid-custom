@@ -1,0 +1,49 @@
+## ===================================================
+## Installimage  -  CentOS-82-64-minimal-custom
+##
+## ===================================================
+
+DRIVE1 /dev/nvme0n1
+DRIVE2 /dev/nvme1n1
+# Set 1 to format drive
+FORMATDRIVE1 1
+FORMATDRIVE2 0
+
+UEFI 1
+
+# if set to 1: force image validation
+FORCE_SIGN
+
+# if set to 1, use GPT even on disks smaller than 2TiB
+# Always use GPT, even if the OS does not support it
+FORCE_GPT 2
+
+# if set to 1: force setting root password even if ssh keys are provided
+FORCE_PASSWORD
+# Activate Linux software RAID? (=No, 1=Yes)
+SWRAID 0
+
+# Software RAID Level (0 1 5 6 10)
+#SWRAIDLEVEL 0
+# Set bootloader
+BOOTLOADER grub
+# Set FQDN hostname
+HOSTNAME s99.eth1.fi
+
+# Set boot partition (UEFI or BIOS) outside LVM
+PART  /boot  ext3  512MiB
+PART  /EFI   ext3  200MiB
+# Set LVM
+PART  lvm    vg    all
+LV  vg  root  /     ext4  28GiB
+LV  vg  swap  swap  swap   15GiB
+LV  vg  vmdata /vmdata ext4  102GiB
+LV  vg  isodata /isodata ext4 90GiB
+LV  vg  data  /data ext4 all
+
+# path to the operating system image
+# supported image sources:  local dir,  ftp,  http,  nfs
+# supported image types: tar, tar.gz, tar.bz, tar.bz2, tar.xz, tgz, tbz, txz
+# for validation of the image, place the detached gpg-signature
+# and your public key in the same directory as your image file."
+IMAGE /root/images/CentOS-82-64-minimal.tar.gz
