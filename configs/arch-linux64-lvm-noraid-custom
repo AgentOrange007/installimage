@@ -1,0 +1,41 @@
+## ===================================================
+## Installimage  -  Archlinux64-lvm-noraid-custom
+##
+## ===================================================
+
+DRIVE1 /dev/sda
+DRIVE2 /dev/sdb
+# Set 1 to format drive
+FORMATDRIVE1 1
+FORMATDRIVE2 1
+
+# if set to 1: force setting root password even if ssh keys are provided
+FORCE_PASSWORD 1
+# Activate Linux software RAID? (=No, 1=Yes)
+SWRAID 0
+
+# Software RAID Level (0 1 5 6 10)
+SWRAIDLEVEL 0
+# Set bootloader
+#BOOTLOADER grub
+# Set FQDN hostname
+HOSTNAME s9.valli.eth1.fi
+
+# Set boot partition (UEFI or BIOS) outside LVM
+PART  /boot  ext3  512MiB
+#PART  /EFI   ext3  200MiB
+# Set LVM
+PART  lvm    vg      all
+LV  vg  root  /      ext4 28GiB
+LV  vg  swap  swap   swap 15GiB
+LV  vg  temp  /temp  ext4 5GiB
+LV  vg  silo1 /silo1 ext4 250GiB
+LV  vg  silo2 /silo2 ext4 450GiB
+LV  vg  data  /data  ext4 all
+
+# path to the operating system image
+# supported image sources:  local dir,  ftp,  http,  nfs
+# supported image types: tar, tar.gz, tar.bz, tar.bz2, tar.xz, tgz, tbz, txz
+# for validation of the image, place the detached gpg-signature
+# and your public key in the same directory as your image file."
+IMAGE /root/.oldroot/nfs/install/../images/archlinux-latest-64-minimal.tar.gz
